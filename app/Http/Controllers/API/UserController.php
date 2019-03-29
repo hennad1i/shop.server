@@ -8,11 +8,6 @@ use App\Http\Controllers\Controller;
 class UserController extends Controller
 {
     public function getUser() {
-        return response()->json(
-            [
-                'status' => 'success',
-                'user'   => auth()->user()
-            ]
-        );
+        return response()->json(auth()->user());
     }
 }

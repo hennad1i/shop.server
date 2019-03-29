@@ -64,7 +64,6 @@ class Handler extends ExceptionHandler
                 return response()->json(['error' => "UNAUTHORIZED_REQUEST"], 401);
             }
         }
-        dd('here');
         return parent::render($request, $exception);
     }
 }

@@ -12,29 +12,29 @@ use Exception;
 
 class AuthController extends Controller
 {
-    
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        $rules       = [
-            'email'    => 'required|email',
+        $rules = [
+            'email' => 'required|email',
             'password' => 'required',
         ];
-        $validator   = Validator::make($credentials, $rules);
+        $validator = Validator::make($credentials, $rules);
         if ($validator->fails()) {
             return response()->json(
                 [
-                    'status'  => 'error',
+                    'status' => 'error',
                     'message' => $validator->messages(),
                 ]
             );
         }
         try {
             // Attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(
                     [
-                        'status'  => 'error',
+                        'status' => 'error',
                         'message' => 'We can`t find an account with this credentials.',
                     ],
                     401
@@ -44,25 +44,25 @@ class AuthController extends Controller
             // Something went wrong with JWT Auth.
             return response()->json(
                 [
-                    'status'  => 'error',
+                    'status' => 'error',
                     'message' => 'Failed to login, please try again.',
                 ],
                 500
             );
         }
-    
+
         // All good so return the token
         return response()->json(
             [
                 'status' => 'success',
-                'data'   => [
+                'data' => [
                     'token' => $token,
                     'user' => auth()->user()
                 ],
             ]
         );
     }
-    
+
     public function logout(Request $request)
     {
         // Get JWT Token from the request header key "Authorization"
@@ -72,7 +72,7 @@ class AuthController extends Controller
             JWTAuth::invalidate($token);
             return response()->json(
                 [
-                    'status'  => 'success',
+                    'status' => 'success',
                     'message' => "User successfully logged out.",
                 ]
             );
@@ -80,31 +80,33 @@ class AuthController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(
                 [
-                    'status'  => 'error',
+                    'status' => 'error',
                     'message' => 'Failed to logout, please try again.',
                 ],
                 500
             );
         }
     }
-    
+
     public function register(Request $request)
     {
+        $lastUser = User::where('id', '>', 0)->orderBy('id', 'DESC')->first();  // crutch
         $user = new User();
+        $user->id = $lastUser['id'] + 1; // crutch
         $user->name = $request->get('name');
         $user->email = $request->get('email');
         $user->password = bcrypt($request->get('password'));
-        
-        try{
+
+        try {
             $user->save();
             $result = $this->login($request);
         } catch (Exception $exception) {
             $result = false;
         }
-        
+
         return $result ? $result : response()->json(
             [
-                'status'  => 'error',
+                'status' => 'error',
                 'message' => 'Email exists already',
             ],
             409

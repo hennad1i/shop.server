@@ -8,5 +8,6 @@ Route::get('products/{type}', 'API\ProductController@getProductByType')->middlew
 
 Route::middleware('jwt.auth')->group(function(){
     Route::get('user', 'API\UserController@getUser');
+    Route::put('product', 'API\ProductController@putProduct')->middleware('cors');
     Route::delete('logout', 'API\AuthController@logout');
 });

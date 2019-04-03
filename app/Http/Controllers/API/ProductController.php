@@ -14,4 +14,10 @@ class ProductController extends Controller
         $products = Product::where('type', '=', $type)->get();
         return response()->json($products);
     }
+    
+    public function putProduct(Request $request) {
+        Product::where('id', $request->get('id'))->update($request->all());
+        $product = Product::find($request->get('id'));
+        return response()->json($product);
+    }
 }

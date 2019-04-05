@@ -18,6 +18,6 @@
 <script type="text/javascript" src="{{ asset('js/5.66c078fa26fcd258ae59.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/es2015-polyfills.c5dd28b362270c767b34.js') }}" nomodule></script>
 <script type="text/javascript" src="{{ asset('js/polyfills.8bbb231b43165d65d357.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/main.1afb6278298fea8c0d37.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/main.2cebe049cc93c34399ef.js') }}"></script>
 </body>
 </html>
